@@ -1,0 +1,21 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col" *ngFor="let col of columns$ | async">
+        {{col.header}}
+      </th>
+      <th scope="col">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of data$ | async; let index = index">
+      <td *ngFor="let col of columns$ | async" [innerHTML]="formatProperty(col, row, index)"></td>
+      <td>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-light"><i class="fas fa-pen"></i></button>
+          <button type="button" class="btn btn-light text-danger"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

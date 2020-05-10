@@ -1,4 +1,5 @@
 export interface FornecedorListDto {
+  id: number;
   nome: string;
   cadastradoEm: Date;
   cpfCnpj: string;
