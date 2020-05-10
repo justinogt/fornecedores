@@ -1,3 +1,9 @@
+export interface EmpresaListDto {
+  id: number;
+  nome: string;
+  uf: string;
+}
+
 export interface FornecedorListDto {
   id: number;
   nome: string;
@@ -8,7 +14,9 @@ export interface FornecedorListDto {
   empresa: string;
   isPF: boolean;
 }
+
 export interface FornecedoresListVm {
   fornecedores: FornecedorListDto[];
+  empresas: EmpresaListDto[];
 }
 

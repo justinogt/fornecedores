@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FornecedorListDto } from '../../../models/fornecedores.model';
+import { FornecedorListDto, EmpresaListDto } from '../../../models/fornecedores.model';
 import { FornecedoresService } from '../../../services/fornecedores.service';
 import { Observable, of } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { STATUS } from 'src/app/models/response.model';
 import { Column } from 'src/app/shared/table/table.component';
 import { formatColumnBold, formatColumnDate } from 'src/app/shared/table/basic-formaters';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalNewProviderComponent } from '../modal-new-provider/modal-new-provider.component';
 
 @Component({
   selector: 'app-page-fornecedores',
@@ -17,7 +19,11 @@ export class PageFornecedoresComponent implements OnInit {
   columns$: Observable<Column<FornecedorListDto>[]>;
   providers$: Observable<FornecedorListDto[]>;
 
-  constructor(private fornecedoresService: FornecedoresService) { }
+  companies: EmpresaListDto[] = [];
+
+  constructor(
+    private fornecedoresService: FornecedoresService,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     this.columns$ = of<Column<FornecedorListDto>[]>([
@@ -27,10 +33,24 @@ export class PageFornecedoresComponent implements OnInit {
       { header: 'CPF ou CNPJ', field: 'cpfCnpj' },
       { header: 'Empresa', field: 'empresa' }
     ]);
+
+    this.refreshProviders();
+  }
+
+  newProvider() {
+    const ref = this.modalService.open(ModalNewProviderComponent, { size: 'lg' });
+    (ref.componentInstance as ModalNewProviderComponent).companies = this.companies;
+    ref.result.then(() => this.refreshProviders());
+  }
+
+  refreshProviders() {
     this.providers$ = this.fornecedoresService.getAll()
       .pipe(
         filter(response => response.status === STATUS.SUCCESS),
-        switchMap(response => of(response.data.fornecedores))
+        switchMap(response => {
+          this.companies = response.data.empresas;
+          return of(response.data.fornecedores);
+        })
       );
   }
 }

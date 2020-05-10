@@ -22,9 +22,12 @@
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
+    "angular2-ladda": "^3.1.0",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.3.1",
     "date-fns": "^2.13.0",
+    "ladda": "^2.0.1",
+    "ngx-mask": "^9.0.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

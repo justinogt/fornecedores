@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <h4 class="modal-title">Cadastro de Fornecedor</h4>
+  <button type="button" class="close" aria-label="Fechar" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="providerForm">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="empresa">Empresa</label>
+
+        <select formControlName="empresa" class="custom-select" required>
+          <option *ngFor="let company of companies" [value]="company.id">{{company.nome}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="nomeFantasia">Nome</label>
+        <input formControlName="nome"
+          type="text" class="form-control" id="nome" placeholder="Nome">
+        
+        <ng-container *ngIf="nome.errors && nome.dirty">
+          <span *ngIf="nome.errors.required" class="invalid-feedback">
+            Nome não pode ser vazio
+          </span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="nomeFantasia">CPF ou CNPJ</label>
+        <input formControlName="cpfCnpj" [mask]="cpfCnpjMask" [dropSpecialCharacters]="false"
+          type="text" class="form-control" id="cpfCnpj" placeholder="000.000.000-00 ou 00.000.000/0000-00">
+        
+        <ng-container *ngIf="cpfCnpj.errors && cpfCnpj.dirty">
+          <span *ngIf="cpfCnpj.errors.cpfInvalid" class="invalid-feedback">
+            CPF inválido
+          </span>
+          <span *ngIf="cpfCnpj.errors.cnpjInvalid" class="invalid-feedback">
+            CNPJ inválido
+          </span>
+        </ng-container>
+      </div>
+    </div>
+    <fieldset *ngIf="isPessoaFisica()">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="nomeFantasia">RG</label>
+          <input formControlName="rg"
+            type="text" class="form-control" id="rg" placeholder="RG">
+          
+          <ng-container *ngIf="rg.errors && rg.dirty">
+            <span *ngIf="rg.errors.required" class="invalid-feedback">
+              RG não pode ser vazio
+            </span>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="dataNascimento">Data de Nascimento</label>
+          <input formControlName="dataNascimento" mask="00/00/0000"
+            type="text" class="form-control" id="dataNascimento" placeholder="00/00/0000">
+          
+          <ng-container *ngIf="dataNascimento.errors && dataNascimento.dirty">
+            <span *ngIf="dataNascimento.errors.required" class="invalid-feedback">
+              Nome não pode ser vazio
+            </span>
+          </ng-container>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Fechar</button>
+  <button [disabled]="!providerForm.valid"
+    type="button" class="btn btn-primary" (click)="save()">Salvar</button>
+</div>

@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Fornecedores.Queries.GetFornecedoresList;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -30,6 +31,10 @@ namespace Application.Fornecedores.Queries.GetFornecedores
             {
                 Fornecedores = await _context.Fornecedores
                     .ProjectTo<FornecedorDto>(_mapper.ConfigurationProvider)
+                    .OrderBy(item => item.Nome)
+                    .ToListAsync(cancellationToken),
+                Empresas = await _context.Empresas
+                    .ProjectTo<EmpresaDto>(_mapper.ConfigurationProvider)
                     .OrderBy(item => item.Nome)
                     .ToListAsync(cancellationToken)
             };

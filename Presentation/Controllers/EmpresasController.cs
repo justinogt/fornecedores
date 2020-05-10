@@ -1,8 +1,10 @@
 ﻿using Application.Empresas.Commands.CreateEmpresa;
+using Application.Empresas.Commands.DeleteEmpresa;
 using Application.Empresas.Queries.GetEmpresa;
 using Application.Empresas.Queries.GetEmpresas;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace Presentation.Controllers
@@ -23,6 +25,12 @@ namespace Presentation.Controllers
 
         [HttpPost]
         public async Task<Response<int>> Post(CreateEmpresaCommand command)
+        {
+            return await BasicRequestHandler(Mediator.Send(command));
+        }
+
+        [HttpDelete]
+        public async Task<Response<bool>> Delete(DeleteEmpresaCommand command)
         {
             return await BasicRequestHandler(Mediator.Send(command));
         }

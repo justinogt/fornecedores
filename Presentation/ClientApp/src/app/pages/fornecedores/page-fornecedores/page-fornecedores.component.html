@@ -1,7 +1,7 @@
 <app-page-card [titleTemplate]="titleTemplate" [contentTemplate]="contentTemplate">
   <ng-template #titleTemplate>
     <h2 class="m-0">Fornecedores</h2>
-    <button class="btn btn-primary">Novo</button>
+    <button class="btn btn-primary" (click)="newProvider()">Novo</button>
   </ng-template>
 
   <ng-template #contentTemplate>

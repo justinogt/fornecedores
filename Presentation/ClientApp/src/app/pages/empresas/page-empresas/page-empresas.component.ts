@@ -19,24 +19,30 @@ export class PageEmpresasComponent implements OnInit {
   columns$: Observable<Column<EmpresaListDto>[]>;
   companies$: Observable<EmpresaListDto[]>;
 
-  constructor(private empresasService: EmpresasService,
+  constructor(
+    private empresasService: EmpresasService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
     this.columns$ = of<Column<EmpresaListDto>[]>([
-      { header: '#', field: 'id', format: formatColumnBold },
-      { header: 'CNPJ', field: 'cnpj' },
       { header: 'Nome Fantasia', field: 'nomeFantasia' },
+      { header: 'CNPJ', field: 'cnpj' },
       { header: 'UF', field: 'uf' }
     ]);
-    this.companies$ = this.empresasService.getAll()
-      .pipe(
-        filter(response => response.status === STATUS.SUCCESS),
-        switchMap(response => of(response.data.empresas))
-      );
+
+    this.refreshCompanies();
   }
 
   newCompany() {
-    this.modalService.open(ModalNewCompanyComponent);
+    this.modalService.open(ModalNewCompanyComponent, { size: 'lg' })
+      .result.then(result => result === 'refresh' && this.refreshCompanies());
+  }
+
+  refreshCompanies() {
+    this.companies$ = this.empresasService.getAll()
+    .pipe(
+      filter(response => response.status === STATUS.SUCCESS),
+      switchMap(response => of(response.data.empresas))
+    );
   }
 }

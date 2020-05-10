@@ -1,12 +1,54 @@
 <div class="modal-header">
-  <h4 class="modal-title">Hi there!</h4>
-  <button type="button" class="close" aria-label="Close">
+  <h4 class="modal-title">Cadastro de Empresa</h4>
+  <button type="button" class="close" aria-label="Fechar" (click)="activeModal.close()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <p>Hello, World!</p>
+  <form [formGroup]="companyForm">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="nomeFantasia">Nome Fantasia</label>
+        <input formControlName="nomeFantasia"
+          type="text" class="form-control" id="nomeFantasia" placeholder="Empresa">
+        
+        <ng-container *ngIf="nomeFantasia.errors && nomeFantasia.dirty">
+          <span *ngIf="nomeFantasia.errors.required" class="invalid-feedback">
+            Nome da Empresa não pode ser vazio
+          </span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="cnpj">CNPJ</label>
+        <input formControlName="cnpj" mask="00.000.000/0000-00" [dropSpecialCharacters]="false"
+          type="text" class="form-control" id="cnpj" placeholder="00.000.000/0000-00">
+        
+        <ng-container *ngIf="cnpj.errors && cnpj.dirty">
+          <span *ngIf="cnpj.errors.cnpjInvalid" class="invalid-feedback">
+            CNPJ inválido
+          </span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="uf">UF</label>
+        <input formControlName="uf"
+          type="text" class="form-control" id="uf" placeholder="UF">
+
+        <ng-container *ngIf="nomeFantasia.errors && nomeFantasia.dirty">
+          <span *ngIf="nomeFantasia.errors.required" class="invalid-feedback">
+            UF não pode ser vazio
+          </span>
+        </ng-container>
+      </div>
+    </div>
+  </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark">Close</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Fechar</button>
+  <button [disabled]="!companyForm.valid"
+    type="button" class="btn btn-primary" (click)="save()">Salvar</button>
 </div>

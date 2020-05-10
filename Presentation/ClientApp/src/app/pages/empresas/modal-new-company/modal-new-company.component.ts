@@ -1,4 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, AbstractControl, FormControl, Validators } from '@angular/forms';
+import { EmpresasService } from 'src/app/services/empresas.service';
+import { isCnpj } from 'src/app/utils';
+
+function cnpjValidator(control: AbstractControl): {[key: string]: any} | null  {
+  return !control.value || !isCnpj(control.value) ?
+    { cnpjInvalid: true } : null;
+}
 
 @Component({
   selector: 'app-modal-new-company',
@@ -6,10 +15,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./modal-new-company.component.css']
 })
 export class ModalNewCompanyComponent implements OnInit {
+  companyForm: FormGroup;
+  isSaving = false;
 
-  constructor() { }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private empresasService: EmpresasService) { }
+
+  get nomeFantasia() { return this.companyForm.get('nomeFantasia'); }
+  get cnpj() { return this.companyForm.get('cnpj'); }
+  get uf() { return this.companyForm.get('uf'); }
 
   ngOnInit() {
+    this.companyForm = new FormGroup({
+      nomeFantasia: new FormControl('', Validators.required),
+      cnpj: new FormControl('', cnpjValidator),
+      uf: new FormControl('', Validators.required)
+    });
   }
 
+  save() {
+    this.isSaving = true;
+    this.empresasService.save(this.companyForm.value).subscribe(() => {
+      this.isSaving = false;
+      this.activeModal.close('refresh');
+    });
+  }
 }
