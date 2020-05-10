@@ -1,18 +1,17 @@
-import { Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Response, STATUS } from '../models/response.model';
 import { FornecedoresListVm } from '../models/fornecedores.model';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
-@Inject({
-  providedIn: 'root',
-})
+@Injectable()
 export class FornecedoresService {
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl) { }
+  constructor(private http: HttpClient) { }
 
   getAll() {
-    return this.http.get<Response<FornecedoresListVm>>(`${this.baseUrl}api/fornecedores`)
+    return this.http.get<Response<FornecedoresListVm>>(`${environment.ApiURL}/fornecedores`)
       .pipe(switchMap(vm => {
         if (vm.status === STATUS.ERROR) return of(vm);
 
