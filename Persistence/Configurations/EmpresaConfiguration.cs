@@ -11,7 +11,6 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Empresa> builder)
         {
-
         }
     }
 }

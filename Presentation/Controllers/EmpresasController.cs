@@ -10,15 +10,15 @@ namespace Presentation.Controllers
     public class EmpresasController : ApiController
     {
         [HttpGet]
-        public async Task<Response<EmpresasVm>> Get()
+        public async Task<Response<EmpresasListVm>> Get()
         {
-            return await BasicRequestHandler(Mediator.Send(new GetEmpresasQuery()));
+            return await BasicRequestHandler(Mediator.Send(new GetEmpresasListQuery()));
         }
 
         [HttpGet("{id}")]
-        public async Task<Response<EmpresaVm>> Get(int id)
+        public async Task<Response<EmpresaDetailVm>> Get(int id)
         {
-            return await BasicRequestHandler(Mediator.Send(new GetEmpresaQuery { Id = id }));
+            return await BasicRequestHandler(Mediator.Send(new GetEmpresaDetailQuery { Id = id }));
         }
 
         [HttpPost]

@@ -1,0 +1,27 @@
+<div class="custom-card pt-3">
+  <div class="custom-card-header">
+    <h2>Empresas</h2>
+  </div>
+  <div class="custom-card-body mt-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">CNPJ</th>
+          <th scope="col">Nome Fantasia</th>
+          <th scope="col">UF</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let company of companies; index as i">
+          <th scope="row">{{ company.id }}</th>
+          <td>{{ company.cnpj }}</td>
+          <td>{{ company.nomeFantasia }}</td>
+          <td>{{ company.uf }}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

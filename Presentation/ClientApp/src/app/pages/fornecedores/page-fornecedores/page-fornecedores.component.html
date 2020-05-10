@@ -1,0 +1,29 @@
+<div class="custom-card pt-3">
+  <div class="custom-card-header">
+    <h2>Fornecedores</h2>
+  </div>
+  <div class="custom-card-body mt-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Cadastrado Em</th>
+          <th scope="col">Nome</th>
+          <th scope="col">CPF ou CNPJ</th>
+          <th scope="col">Empresa</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let provider of providers; index as i">
+          <th scope="row">{{ provider.id }}</th>
+          <td>{{ provider.casdastradoEm }}</td>
+          <td>{{ provider.nome }}</td>
+          <td>{{ provider.cpfCnpj }}</td>
+          <td>{{ provider.empresa }}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

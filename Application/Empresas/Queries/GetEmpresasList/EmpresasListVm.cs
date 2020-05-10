@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Application.Empresas.Queries.GetEmpresas
 {
-    public class EmpresasVm
+    public class EmpresasListVm
     {
         public List<EmpresaDto> Empresas { get; set; }
     }

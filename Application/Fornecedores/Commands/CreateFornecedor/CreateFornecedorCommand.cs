@@ -3,6 +3,7 @@ using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,8 +35,8 @@ namespace Application.Fornecedores.Commands.CreateFornecedor
                 Nome = request.Nome,
                 CpfCnpj = request.CpfCnpj,
                 RG = request.RG,
-                DataNascimento = request.DataNascimento
-
+                DataNascimento = request.DataNascimento,
+                Empresa = _context.Empresas.Where(item => item.Id == request.EmpresaId).FirstOrDefault()
             };
             _context.Fornecedores.Add(fornecedor);
 
