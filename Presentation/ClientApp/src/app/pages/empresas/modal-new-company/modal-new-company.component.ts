@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, AbstractControl, FormControl, Validators } from '@angular/forms';
+import { FormGroup, AbstractControl, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { EmpresasService } from 'src/app/services/empresas.service';
 import { isCnpj } from 'src/app/utils';
 
-function cnpjValidator(control: AbstractControl): {[key: string]: any} | null  {
+function cnpjValidator(control: AbstractControl): ValidationErrors | null  {
   return !control.value || !isCnpj(control.value) ?
     { cnpjInvalid: true } : null;
 }

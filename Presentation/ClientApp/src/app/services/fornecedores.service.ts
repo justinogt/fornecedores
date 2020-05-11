@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Response, STATUS } from '../models/response.model';
-import { FornecedoresListVm } from '../models/fornecedores.model';
+import { FornecedoresListVm, FornecedorSaveDto } from '../models/fornecedores.model';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -20,5 +20,9 @@ export class FornecedoresService {
 
         return of(vm);
       }));
+  }
+
+  save(provider: FornecedorSaveDto) {
+    return this.http.post<Response<number>>(`${environment.ApiURL}/fornecedores`, provider);
   }
 }

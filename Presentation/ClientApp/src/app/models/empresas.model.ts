@@ -1,10 +1,10 @@
-export interface EmpresaDto {
+export interface EmpresaSaveDto {
   cnpj: string;
   nomeFantasia: string;
   uf: string;
 }
 
-export interface EmpresaListDto extends EmpresaDto {
+export interface EmpresaListDto extends EmpresaSaveDto {
   id: number;
 }
 export interface EmpresasListVm {
@@ -18,6 +18,6 @@ export interface FornecedorDetailDto {
   dataNascimento: Date;
   telefones: string[];
 }
-export interface EmpresaDetailVm extends EmpresaDto {
+export interface EmpresaDetailVm extends EmpresaSaveDto {
   fornecedores: FornecedorDetailDto[];
 }

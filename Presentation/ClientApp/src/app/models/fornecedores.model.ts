@@ -1,3 +1,11 @@
+export interface FornecedorSaveDto {
+  empresaId: number;
+  nome: string;
+  cpfCnpj: string;
+  rg: string;
+  dataNascimento: Date;
+}
+
 export interface EmpresaListDto {
   id: number;
   nome: string;

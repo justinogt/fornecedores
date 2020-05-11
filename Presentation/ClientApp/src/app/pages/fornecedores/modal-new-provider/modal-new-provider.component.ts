@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, AbstractControl, FormControl, Validators } from '@angular/forms';
+import { FormGroup, AbstractControl, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { EmpresaListDto } from 'src/app/models/fornecedores.model';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
 import { isCpf, isCnpj } from 'src/app/utils';
 
-function cpfOrCnpjValidator(control: AbstractControl): {[key: string]: any} | null  {
+function cpfOrCnpjValidator(control: AbstractControl): ValidationErrors | null  {
   if (control.value.length <= 14 && !isCpf(control.value))
     return { cpfInvalid: true };
-  else if (control.value.length > 14 && !isCnpj(control.value))
-    return { cnpjInvalid: true };
+  // else if (control.value.length > 14 && !isCnpj(control.value))
+  //   return { cnpjInvalid: true };
 
   return null;
 }
@@ -53,11 +53,18 @@ export class ModalNewProviderComponent implements OnInit {
     return isCpf(this.cpfCnpj.value);
   }
 
+  isFormValid() {
+    if (this.isPessoaFisica())
+      return this.providerForm.valid;
+
+    return this.empresa.valid && this.nome.valid && this.cpfCnpj.valid;
+  }
+
   save() {
     this.isSaving = true;
-    // this.empresasService.save(this.providerForm.value).subscribe(() => {
-    //   this.isSaving = false;
-    //   this.activeModal.close();
-    // });
+    this.fornecedoresService.save(this.providerForm.value).subscribe(() => {
+      this.isSaving = false;
+      this.activeModal.close('refresh');
+    });
   }
 }
