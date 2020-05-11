@@ -5,6 +5,6 @@
   </ng-template>
 
   <ng-template #contentTemplate>
-    <app-table [columns$]="columns$" [data$]="companies$"></app-table>
+    <app-table [columns$]="columns$" [data$]="companies$" (filter)="filter($event)"></app-table>
   </ng-template>
 </app-page-card>

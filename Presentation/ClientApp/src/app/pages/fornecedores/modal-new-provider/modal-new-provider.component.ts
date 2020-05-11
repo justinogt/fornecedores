@@ -13,8 +13,10 @@ const companyPrProviderShouldBeAdult = (companies: EmpresaSimple[]): ValidatorFn
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control.parent) return null;
 
-    const empresaId = Number(control.parent.get('empresaId').value);
     const company = companies.find(item => item.id === empresaId);
+    if (!company) return null;
+
+    const empresaId = Number(control.parent.get('empresaId').value);
     const birthday = parse(control.value, 'dd/MM/yyyy', new Date());
 
     if (company.uf === 'PR' && differenceInYears(new Date(), birthday) < 18)
@@ -52,7 +54,7 @@ export class ModalNewProviderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.providerForm = new FormGroup({
-      empresaId: new FormControl(this.companies.length > 0 ? this.companies[0].id : 0),
+      empresaId: new FormControl(this.companies.length > 0 ? this.companies[0].id : 0, Validators.required),
       nome: new FormControl('', Validators.required),
       cpfCnpj: new FormControl('', [cpfValidator, cnpjValidator(14)]),
       rg: new FormControl('', Validators.required),
