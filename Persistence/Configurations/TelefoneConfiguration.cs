@@ -9,6 +9,8 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Telefone> builder)
         {
+            builder.HasOne(item => item.Fornecedor).WithMany(item => item.Telefones)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -7,9 +7,17 @@ namespace Application.Empresas.Commands.CreateEmpresa
     {
         public CreateEmpresaCommandValidator()
         {
-            RuleFor(item => item.Cnpj)
+            RuleFor(i => i.Cnpj)
                 .Must(BeValidCnpj)
                 .WithMessage("Cnpj inválido");
+
+            RuleFor(i => i.NomeFantasia)
+                .NotEmpty()
+                .WithMessage("Nome inválido");
+
+            RuleFor(i => i.Uf)
+                .NotEmpty().WithMessage("UF inválido")
+                .MaximumLength(2).WithMessage("UF inválido");
         }
 
         private bool BeValidCnpj(string cnpj)

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200511195109_ChangedTelefone")]
+    partial class ChangedTelefone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,10 +109,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Telefone", b =>
                 {
-                    b.HasOne("Domain.Entities.Fornecedor", "Fornecedor")
+                    b.HasOne("Domain.Entities.Fornecedor", null)
                         .WithMany("Telefones")
-                        .HasForeignKey("FornecedorId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FornecedorId");
                 });
 #pragma warning restore 612, 618
         }

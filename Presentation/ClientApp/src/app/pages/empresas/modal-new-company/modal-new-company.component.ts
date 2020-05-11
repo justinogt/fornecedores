@@ -12,6 +12,11 @@ import { cnpjValidator } from 'src/app/utils';
 export class ModalNewCompanyComponent implements OnInit {
   companyForm: FormGroup;
   isSaving = false;
+  states = [
+    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT',
+    'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO',
+    'RR', 'SC', 'SP', 'SE', 'TO'
+  ];
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -25,7 +30,7 @@ export class ModalNewCompanyComponent implements OnInit {
     this.companyForm = new FormGroup({
       nomeFantasia: new FormControl('', Validators.required),
       cnpj: new FormControl('', cnpjValidator()),
-      uf: new FormControl('', Validators.required)
+      uf: new FormControl('SC', Validators.required)
     });
   }
 

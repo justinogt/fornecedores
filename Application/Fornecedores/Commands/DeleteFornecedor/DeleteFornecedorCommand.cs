@@ -22,8 +22,8 @@ namespace Application.Fornecedores.Commands.DeleteFornecedor
         public async Task<bool> Handle(DeleteFornecedorCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.Fornecedores.FindAsync(request.Id);
-            _context.Fornecedores.Remove(entity);
 
+            _context.Fornecedores.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }

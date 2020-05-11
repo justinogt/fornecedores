@@ -18,6 +18,7 @@ namespace Application.Fornecedores.Commands.CreateFornecedor
         public string RG { get; set; }
         public string DataNascimento { get; set; }
         public int EmpresaId { get; set; }
+        public IList<string> Telefones { get; set; }
     }
 
     public class CreateFornecedorCommandHandler : IRequestHandler<CreateFornecedorCommand, int>
@@ -43,6 +44,7 @@ namespace Application.Fornecedores.Commands.CreateFornecedor
                 Empresa = await _context.Empresas.Where(item => item.Id == request.EmpresaId)
                     .FirstOrDefaultAsync(cancellationToken)
             };
+            fornecedor.Telefones = request.Telefones?.Select(item => new Telefone() { Numero = item }).ToList();
             _context.Fornecedores.Add(fornecedor);
 
             await _context.SaveChangesAsync(cancellationToken);

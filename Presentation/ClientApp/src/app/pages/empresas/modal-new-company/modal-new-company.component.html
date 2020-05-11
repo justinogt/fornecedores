@@ -35,14 +35,9 @@
     <div class="form-row">
       <div class="form-group col-md-12">
         <label for="uf">UF</label>
-        <input formControlName="uf"
-          type="text" class="form-control" id="uf" placeholder="UF">
-
-        <ng-container *ngIf="nomeFantasia.errors && nomeFantasia.dirty">
-          <span *ngIf="nomeFantasia.errors.required" class="invalid-feedback">
-            UF não pode ser vazio
-          </span>
-        </ng-container>
+        <select formControlName="uf" class="custom-select" required>
+          <option *ngFor="let state of states" [value]="state">{{state}}</option>
+        </select>
       </div>
     </div>
   </form>
