@@ -9,7 +9,7 @@ namespace Domain.Entities
     {
         public string Nome { get; set; }
         public string CpfCnpj { get; set; }
-        public string RG { get; set; }
+        public string Rg { get; set; }
         public DateTime DataNascimento { get; set; }
         public Empresa Empresa { get; set; }
         public IList<Telefone> Telefones { get; set; }
@@ -19,6 +19,6 @@ namespace Domain.Entities
             Telefones = new List<Telefone>();
         }
 
-        public bool IsPF => Regex.IsMatch(CpfCnpj, @"^[0-9]{11}$|^[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}$");
+        public bool IsPf => Regex.IsMatch(CpfCnpj, @"^[0-9]{11}$|^[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}$");
     }
 }

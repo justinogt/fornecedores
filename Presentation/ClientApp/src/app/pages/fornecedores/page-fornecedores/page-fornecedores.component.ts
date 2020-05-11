@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FornecedorListDto, EmpresaListDto } from '../../../models/fornecedores.model';
 import { FornecedoresService } from '../../../services/fornecedores.service';
 import { Observable, of } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
@@ -8,6 +7,8 @@ import { Column } from 'src/app/shared/table/table.component';
 import { formatColumnBold, formatColumnDate } from 'src/app/shared/table/basic-formaters';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalNewProviderComponent } from '../modal-new-provider/modal-new-provider.component';
+import { FornecedorListItem } from 'src/app/models/fornecedores.model';
+import { EmpresaSimple } from 'src/app/models/empresas.model';
 
 @Component({
   selector: 'app-page-fornecedores',
@@ -16,19 +17,19 @@ import { ModalNewProviderComponent } from '../modal-new-provider/modal-new-provi
 })
 export class PageFornecedoresComponent implements OnInit {
 
-  columns$: Observable<Column<FornecedorListDto>[]>;
-  providers$: Observable<FornecedorListDto[]>;
+  columns$: Observable<Column<FornecedorListItem>[]>;
+  providers$: Observable<FornecedorListItem[]>;
 
-  companies: EmpresaListDto[] = [];
+  companies: EmpresaSimple[] = [];
 
   constructor(
     private fornecedoresService: FornecedoresService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.columns$ = of<Column<FornecedorListDto>[]>([
+    this.columns$ = of<Column<FornecedorListItem>[]>([
       { header: '#', field: 'id', format: formatColumnBold },
-      { header: 'Cadastrado Em', field: 'cadastradoEm', format: formatColumnDate },
+      { header: 'Cadastrado Em', field: 'criadoEm', format: formatColumnDate },
       { header: 'Nome', field: 'nome' },
       { header: 'CPF ou CNPJ', field: 'cpfCnpj' },
       { header: 'Empresa', field: 'empresa' }

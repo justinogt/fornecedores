@@ -1,9 +1,9 @@
 ﻿using Application.Common.Mappings;
 using Domain.Entities;
 
-namespace Application.Empresas.Queries.GetEmpresas
+namespace Application.Common.Dtos.Empresas
 {
-    public class EmpresaDto : IMapFrom<Empresa>
+    public class EmpresaSimple : IMapFrom<Empresa>
     {
         public int Id { get; set; }
         public string NomeFantasia { get; set; }

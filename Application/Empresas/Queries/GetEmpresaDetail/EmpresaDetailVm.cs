@@ -1,14 +1,12 @@
-﻿using Application.Common.Mappings;
+﻿using Application.Common.Dtos.Empresas;
+using Application.Common.Mappings;
 using Domain.Entities;
 using System.Collections.Generic;
 
-namespace Application.Empresas.Queries.GetEmpresa
+namespace Application.Empresas.Queries.GetEmpresaDetail
 {
-    public class EmpresaDetailVm : IMapFrom<Empresa>
+    public class EmpresaDetailVm : EmpresaSimple, IMapFrom<Empresa>
     {
-        public string NomeFantasia { get; set; }
-        public string Uf { get; set; }
-        public string Cnpj { get; set; }
-        public IList<FornecedorDto> Fornecedores { get; set; }
+        public IList<FornecedorEmpresaDetail> Fornecedores { get; set; }
     }
 }

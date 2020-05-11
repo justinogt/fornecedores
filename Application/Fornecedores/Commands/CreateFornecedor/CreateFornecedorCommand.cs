@@ -38,7 +38,7 @@ namespace Application.Fornecedores.Commands.CreateFornecedor
             {
                 Nome = request.Nome,
                 CpfCnpj = request.CpfCnpj,
-                RG = request.RG,
+                Rg = request.RG,
                 DataNascimento = dataNascimento,
                 Empresa = await _context.Empresas.Where(item => item.Id == request.EmpresaId)
                     .FirstOrDefaultAsync(cancellationToken)

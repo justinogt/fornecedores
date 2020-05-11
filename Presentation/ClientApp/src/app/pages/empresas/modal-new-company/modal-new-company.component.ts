@@ -24,7 +24,7 @@ export class ModalNewCompanyComponent implements OnInit {
   ngOnInit() {
     this.companyForm = new FormGroup({
       nomeFantasia: new FormControl('', Validators.required),
-      cnpj: new FormControl('', cnpjValidator),
+      cnpj: new FormControl('', cnpjValidator()),
       uf: new FormControl('', Validators.required)
     });
   }

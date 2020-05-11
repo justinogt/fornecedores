@@ -49,6 +49,6 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Fechar</button>
-  <button [disabled]="!companyForm.valid"
+  <button [ladda]="isSaving" [disabled]="!companyForm.valid"
     type="button" class="btn btn-primary" (click)="save()">Salvar</button>
 </div>

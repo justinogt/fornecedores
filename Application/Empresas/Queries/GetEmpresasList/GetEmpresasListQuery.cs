@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Dtos.Empresas;
+using Application.Common.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Empresas.Queries.GetEmpresas
+namespace Application.Empresas.Queries.GetEmpresasList
 {
     public class GetEmpresasListQuery : IRequest<EmpresasListVm>
     {
@@ -29,7 +30,7 @@ namespace Application.Empresas.Queries.GetEmpresas
             return new EmpresasListVm
             {
                 Empresas = await _context.Empresas
-                    .ProjectTo<EmpresaDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<EmpresaSimple>(_mapper.ConfigurationProvider)
                     .OrderBy(item => item.NomeFantasia)
                     .ToListAsync(cancellationToken)
             };

@@ -11,7 +11,7 @@
         <label for="empresaId">Empresa</label>
 
         <select formControlName="empresaId" class="custom-select" required>
-          <option *ngFor="let company of companies" [value]="company.id">{{company.nome}}</option>
+          <option *ngFor="let company of companies" [value]="company.id">{{company.nomeFantasia}} - {{company.uf}}</option>
         </select>
       </div>
     </div>
@@ -79,6 +79,6 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Fechar</button>
-  <button [disabled]="!isFormValid()"
+  <button [ladda]="isSaving" [disabled]="!isFormValid()"
     type="button" class="btn btn-primary" (click)="save()">Salvar</button>
 </div>

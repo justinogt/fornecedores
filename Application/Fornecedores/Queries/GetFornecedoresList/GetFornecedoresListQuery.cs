@@ -1,5 +1,5 @@
-﻿using Application.Common.Interfaces;
-using Application.Fornecedores.Queries.GetFornecedoresList;
+﻿using Application.Common.Dtos.Empresas;
+using Application.Common.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Fornecedores.Queries.GetFornecedores
+namespace Application.Fornecedores.Queries.GetFornecedoresList
 {
     public class GetFornecedoresListQuery : IRequest<FornecedoresListVm>
     {
@@ -30,12 +30,12 @@ namespace Application.Fornecedores.Queries.GetFornecedores
             return new FornecedoresListVm
             {
                 Fornecedores = await _context.Fornecedores
-                    .ProjectTo<FornecedorDto>(_mapper.ConfigurationProvider)
-                    .OrderBy(item => item.CadastradoEm)
+                    .ProjectTo<FornecedorListItem>(_mapper.ConfigurationProvider)
+                    .OrderByDescending(item => item.CriadoEm)
                     .ToListAsync(cancellationToken),
                 Empresas = await _context.Empresas
-                    .ProjectTo<EmpresaDto>(_mapper.ConfigurationProvider)
-                    .OrderBy(item => item.Nome)
+                    .ProjectTo<EmpresaSimple>(_mapper.ConfigurationProvider)
+                    .OrderBy(item => item.NomeFantasia)
                     .ToListAsync(cancellationToken)
             };
         }

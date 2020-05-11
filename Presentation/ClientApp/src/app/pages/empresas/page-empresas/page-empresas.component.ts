@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { EmpresasService } from 'src/app/services/empresas.service';
-import { EmpresaListDto } from '../../../models/empresas.model';
-import { Observable, of, Subscription, BehaviorSubject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Column } from 'src/app/shared/table/table.component';
 import { filter, switchMap } from 'rxjs/operators';
 import { STATUS } from 'src/app/models/response.model';
-import { formatColumnBold } from 'src/app/shared/table/basic-formaters';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalNewCompanyComponent } from '../modal-new-company/modal-new-company.component';
+import { EmpresaSimple } from 'src/app/models/empresas.model';
 
 @Component({
   selector: 'app-page-empresas',
@@ -16,15 +15,15 @@ import { ModalNewCompanyComponent } from '../modal-new-company/modal-new-company
 })
 export class PageEmpresasComponent implements OnInit {
 
-  columns$: Observable<Column<EmpresaListDto>[]>;
-  companies$: Observable<EmpresaListDto[]>;
+  columns$: Observable<Column<EmpresaSimple>[]>;
+  companies$: Observable<EmpresaSimple[]>;
 
   constructor(
     private empresasService: EmpresasService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.columns$ = of<Column<EmpresaListDto>[]>([
+    this.columns$ = of<Column<EmpresaSimple>[]>([
       { header: 'Nome Fantasia', field: 'nomeFantasia' },
       { header: 'CNPJ', field: 'cnpj' },
       { header: 'UF', field: 'uf' }

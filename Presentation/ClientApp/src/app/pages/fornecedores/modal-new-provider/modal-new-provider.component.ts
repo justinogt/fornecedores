@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
-import { EmpresaListDto } from 'src/app/models/fornecedores.model';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
 import { cpfValidator, cnpjValidator, isCpf, dateValidator } from 'src/app/utils';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { MaskApplierService } from 'ngx-mask';
 import { filter, switchMap } from 'rxjs/operators';
 import { parse, differenceInYears } from 'date-fns';
+import { EmpresaSimple } from 'src/app/models/empresas.model';
 
-const companyPrProviderShouldBeAdult = (companies: EmpresaListDto[]): ValidatorFn => {
+const companyPrProviderShouldBeAdult = (companies: EmpresaSimple[]): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control.parent) return null;
 
@@ -32,7 +32,7 @@ const companyPrProviderShouldBeAdult = (companies: EmpresaListDto[]): ValidatorF
 export class ModalNewProviderComponent implements OnInit, OnDestroy {
   providerForm: FormGroup;
   isSaving = false;
-  companies: EmpresaListDto[] = [];
+  companies: EmpresaSimple[] = [];
 
   cpfCnpjKeyUp$ = new BehaviorSubject<string>('');
 
@@ -54,7 +54,7 @@ export class ModalNewProviderComponent implements OnInit, OnDestroy {
     this.providerForm = new FormGroup({
       empresaId: new FormControl(this.companies.length > 0 ? this.companies[0].id : 0),
       nome: new FormControl('', Validators.required),
-      cpfCnpj: new FormControl('', [cpfValidator, cnpjValidator]),
+      cpfCnpj: new FormControl('', [cpfValidator, cnpjValidator(14)]),
       rg: new FormControl('', Validators.required),
       dataNascimento: new FormControl('', [dateValidator, companyPrProviderShouldBeAdult(this.companies)])
     });

@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Response } from '../models/response.model';
-import { EmpresasListVm, EmpresaDetailVm, EmpresaSaveDto } from '../models/empresas.model';
 import { environment } from 'src/environments/environment';
+import { EmpresasListVm, EmpresaDetailVm, EmpresaSaveCommand } from '../models/empresas.model';
 
 @Injectable()
 export class EmpresasService {
@@ -16,7 +16,7 @@ export class EmpresasService {
     return this.http.get<Response<EmpresaDetailVm>>(`${environment.ApiURL}/empresas/${id}`);
   }
 
-  save(company: EmpresaSaveDto) {
+  save(company: EmpresaSaveCommand) {
     return this.http.post<Response<number>>(`${environment.ApiURL}/empresas`, company);
   }
 }

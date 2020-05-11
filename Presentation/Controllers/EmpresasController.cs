@@ -1,7 +1,7 @@
 ﻿using Application.Empresas.Commands.CreateEmpresa;
 using Application.Empresas.Commands.DeleteEmpresa;
-using Application.Empresas.Queries.GetEmpresa;
-using Application.Empresas.Queries.GetEmpresas;
+using Application.Empresas.Queries.GetEmpresaDetail;
+using Application.Empresas.Queries.GetEmpresasList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
 using System;

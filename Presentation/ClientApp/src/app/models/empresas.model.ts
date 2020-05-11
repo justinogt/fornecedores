@@ -1,23 +1,25 @@
-export interface EmpresaSaveDto {
-  cnpj: string;
+import { FornecedorSimple } from './fornecedores.model';
+
+export interface EmpresaSaveCommand {
   nomeFantasia: string;
+  cnpj: string;
   uf: string;
 }
 
-export interface EmpresaListDto extends EmpresaSaveDto {
+export interface EmpresaSimple {
   id: number;
-}
-export interface EmpresasListVm {
-  empresas: EmpresaListDto[];
+  nomeFantasia: string;
+  cnpj: string;
+  uf: string;
 }
 
-export interface FornecedorDetailDto {
-  nome: string;
-  cpfCnpj: string;
-  rg: string;
-  dataNascimento: Date;
+export interface EmpresaDetailVm extends EmpresaSimple {
+  fornecedores: FornecedorEmpresaDetail[];
+}
+export interface FornecedorEmpresaDetail extends FornecedorSimple {
   telefones: string[];
 }
-export interface EmpresaDetailVm extends EmpresaSaveDto {
-  fornecedores: FornecedorDetailDto[];
+
+export interface EmpresasListVm {
+  empresas: EmpresaSimple[];
 }

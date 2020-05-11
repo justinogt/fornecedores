@@ -1,11 +1,11 @@
-﻿using Application.Fornecedores.Queries.GetFornecedoresList;
+﻿using Application.Common.Dtos.Empresas;
 using System.Collections.Generic;
 
-namespace Application.Fornecedores.Queries.GetFornecedores
+namespace Application.Fornecedores.Queries.GetFornecedoresList
 {
     public class FornecedoresListVm
     {
-        public List<FornecedorDto> Fornecedores { get; set; }
-        public List<EmpresaDto> Empresas { get; set; }
+        public List<FornecedorListItem> Fornecedores { get; set; }
+        public List<EmpresaSimple> Empresas { get; set; }
     }
 }

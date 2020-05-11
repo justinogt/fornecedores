@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Application.Common.Dtos.Empresas;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Application.Empresas.Queries.GetEmpresas
+namespace Application.Empresas.Queries.GetEmpresasList
 {
     public class EmpresasListVm
     {
-        public List<EmpresaDto> Empresas { get; set; }
+        public List<EmpresaSimple> Empresas { get; set; }
     }
 }
