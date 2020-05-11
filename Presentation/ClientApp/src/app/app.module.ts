@@ -10,6 +10,7 @@ import { SharedModule } from './shared/shared.module';
 import { NgxMaskModule } from 'ngx-mask';
 import { LaddaModule } from 'angular2-ladda';
 import { AppRoutingModule } from './app-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { PageEmpresasComponent } from './pages/empresas/page-empresas/page-empresas.component';
@@ -32,6 +33,7 @@ import { ModalNewProviderComponent } from './pages/fornecedores/modal-new-provid
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    NgbModule,
     NgxMaskModule.forRoot(),
     LaddaModule.forRoot({
       style: 'zoom-in',

@@ -8,9 +8,9 @@
   <form [formGroup]="providerForm">
     <div class="form-row">
       <div class="form-group col-md-12">
-        <label for="empresa">Empresa</label>
+        <label for="empresaId">Empresa</label>
 
-        <select formControlName="empresa" class="custom-select" required>
+        <select formControlName="empresaId" class="custom-select" required>
           <option *ngFor="let company of companies" [value]="company.id">{{company.nome}}</option>
         </select>
       </div>
@@ -31,7 +31,7 @@
     <div class="form-row">
       <div class="form-group col-md-12">
         <label for="nomeFantasia">CPF ou CNPJ</label>
-        <input formControlName="cpfCnpj" [mask]="cpfCnpjMask" [dropSpecialCharacters]="false"
+        <input formControlName="cpfCnpj" (keyup)="cpfCnpjKeyUp$.next($event)"
           type="text" class="form-control" id="cpfCnpj" placeholder="000.000.000-00 ou 00.000.000/0000-00">
         
         <ng-container *ngIf="cpfCnpj.errors && cpfCnpj.dirty">
@@ -61,12 +61,15 @@
       <div class="form-row">
         <div class="form-group col-md-12">
           <label for="dataNascimento">Data de Nascimento</label>
-          <input formControlName="dataNascimento" mask="00/00/0000"
+          <input formControlName="dataNascimento" mask="00/00/0000" [dropSpecialCharacters]="false"
             type="text" class="form-control" id="dataNascimento" placeholder="00/00/0000">
           
           <ng-container *ngIf="dataNascimento.errors && dataNascimento.dirty">
-            <span *ngIf="dataNascimento.errors.required" class="invalid-feedback">
-              Nome não pode ser vazio
+            <span *ngIf="dataNascimento.errors.dateInvalid" class="invalid-feedback">
+              Data inválida
+            </span>
+            <span *ngIf="dataNascimento.errors.shouldBeAdult" class="invalid-feedback">
+              A empresa é do PR e não aceita fornecedores menor de Idade
             </span>
           </ng-container>
         </div>

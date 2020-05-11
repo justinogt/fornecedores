@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmpresasService } from 'src/app/services/empresas.service';
 import { EmpresaListDto } from '../../../models/empresas.model';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription, BehaviorSubject } from 'rxjs';
 import { Column } from 'src/app/shared/table/table.component';
 import { filter, switchMap } from 'rxjs/operators';
 import { STATUS } from 'src/app/models/response.model';
@@ -34,15 +34,16 @@ export class PageEmpresasComponent implements OnInit {
   }
 
   newCompany() {
-    this.modalService.open(ModalNewCompanyComponent, { size: 'lg' })
-      .result.then(result => result === 'refresh' && this.refreshCompanies());
+    this.modalService.open(ModalNewCompanyComponent, { size: 'lg' }).result
+      .then(result => result === 'refresh' && this.refreshCompanies())
+      .catch(() => {});
   }
 
   refreshCompanies() {
     this.companies$ = this.empresasService.getAll()
-    .pipe(
-      filter(response => response.status === STATUS.SUCCESS),
-      switchMap(response => of(response.data.empresas))
-    );
+      .pipe(
+        filter(response => response.status === STATUS.SUCCESS),
+        switchMap(response => of(response.data.empresas))
+      );
   }
 }

@@ -1,36 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, AbstractControl, FormControl, Validators, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
 import { EmpresaListDto } from 'src/app/models/fornecedores.model';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
-import { isCpf, isCnpj } from 'src/app/utils';
+import { cpfValidator, cnpjValidator, isCpf, dateValidator } from 'src/app/utils';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
+import { MaskApplierService } from 'ngx-mask';
+import { filter, switchMap } from 'rxjs/operators';
+import { parse, differenceInYears } from 'date-fns';
 
-function cpfOrCnpjValidator(control: AbstractControl): ValidationErrors | null  {
-  if (control.value.length <= 14 && !isCpf(control.value))
-    return { cpfInvalid: true };
-  // else if (control.value.length > 14 && !isCnpj(control.value))
-  //   return { cnpjInvalid: true };
+const companyPrProviderShouldBeAdult = (companies: EmpresaListDto[]): ValidatorFn => {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.parent) return null;
 
-  return null;
-}
+    const empresaId = Number(control.parent.get('empresaId').value);
+    const company = companies.find(item => item.id === empresaId);
+    const birthday = parse(control.value, 'dd/MM/yyyy', new Date());
+
+    if (company.uf === 'PR' && differenceInYears(new Date(), birthday) < 18)
+      return { shouldBeAdult: true };
+
+    return null;
+  };
+};
 
 @Component({
   selector: 'app-modal-new-provider',
   templateUrl: './modal-new-provider.component.html',
   styleUrls: ['./modal-new-provider.component.css']
 })
-export class ModalNewProviderComponent implements OnInit {
+export class ModalNewProviderComponent implements OnInit, OnDestroy {
   providerForm: FormGroup;
   isSaving = false;
   companies: EmpresaListDto[] = [];
 
-  cpfCnpjMask = '000.000.000-000';
+  cpfCnpjKeyUp$ = new BehaviorSubject<string>('');
+
+  private lastCpfCnpjValue: string;
+  private subs: Subscription[] = [];
 
   constructor(
     public activeModal: NgbActiveModal,
-    private fornecedoresService: FornecedoresService) { }
+    private fornecedoresService: FornecedoresService,
+    private maskService: MaskApplierService) { }
 
-  get empresa() { return this.providerForm.get('empresa'); }
+  get empresaId() { return this.providerForm.get('empresaId'); }
   get nome() { return this.providerForm.get('nome'); }
   get cpfCnpj() { return this.providerForm.get('cpfCnpj'); }
   get rg() { return this.providerForm.get('rg'); }
@@ -38,15 +52,29 @@ export class ModalNewProviderComponent implements OnInit {
 
   ngOnInit() {
     this.providerForm = new FormGroup({
-      empresa: new FormControl(this.companies.length > 0 ? this.companies[0].id : 0),
+      empresaId: new FormControl(this.companies.length > 0 ? this.companies[0].id : 0),
       nome: new FormControl('', Validators.required),
-      cpfCnpj: new FormControl('', cpfOrCnpjValidator),
+      cpfCnpj: new FormControl('', [cpfValidator, cnpjValidator]),
       rg: new FormControl('', Validators.required),
-      dataNascimento: new FormControl('')
+      dataNascimento: new FormControl('', [dateValidator, companyPrProviderShouldBeAdult(this.companies)])
     });
 
-    this.cpfCnpj.valueChanges.subscribe(value => this.cpfCnpjMask = value.length > 14 ?
-      '00.000.000/0000-00' : '000.000.000-000');
+    this.subs.push(
+      this.cpfCnpjKeyUp$
+        .pipe(
+          switchMap((ev: any) => of(ev.target?.value.replace(/\.|-|\//g, ''))),
+          filter((value: string) => value !== this.lastCpfCnpjValue)
+        ).subscribe((value: string) => {
+          const mask = value.length > 11 ? '00.000.000/0000-00' : '000.000.000-00';
+          this.lastCpfCnpjValue = this.maskService.applyMask(value, mask);
+          this.cpfCnpj.setValue(this.lastCpfCnpjValue);
+        })
+    );
+  }
+
+  ngOnDestroy() {
+    for (const sub of this.subs)
+      sub.unsubscribe();
   }
 
   isPessoaFisica() {
@@ -57,7 +85,7 @@ export class ModalNewProviderComponent implements OnInit {
     if (this.isPessoaFisica())
       return this.providerForm.valid;
 
-    return this.empresa.valid && this.nome.valid && this.cpfCnpj.valid;
+    return this.empresaId.valid && this.nome.valid && this.cpfCnpj.valid;
   }
 
   save() {

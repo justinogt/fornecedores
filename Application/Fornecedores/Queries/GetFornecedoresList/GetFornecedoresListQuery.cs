@@ -31,7 +31,7 @@ namespace Application.Fornecedores.Queries.GetFornecedores
             {
                 Fornecedores = await _context.Fornecedores
                     .ProjectTo<FornecedorDto>(_mapper.ConfigurationProvider)
-                    .OrderBy(item => item.Nome)
+                    .OrderBy(item => item.CadastradoEm)
                     .ToListAsync(cancellationToken),
                 Empresas = await _context.Empresas
                     .ProjectTo<EmpresaDto>(_mapper.ConfigurationProvider)

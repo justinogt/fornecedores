@@ -40,7 +40,10 @@ export class PageFornecedoresComponent implements OnInit {
   newProvider() {
     const ref = this.modalService.open(ModalNewProviderComponent, { size: 'lg' });
     (ref.componentInstance as ModalNewProviderComponent).companies = this.companies;
-    ref.result.then(result => result === 'refresh' && this.refreshProviders());
+
+    ref.result
+      .then(result => result === 'refresh' && this.refreshProviders())
+      .catch(() => {});
   }
 
   refreshProviders() {

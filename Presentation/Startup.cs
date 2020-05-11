@@ -25,7 +25,7 @@ namespace Presentation
             services.AddPersistence(Configuration);
             services.AddApplication(Configuration);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
