@@ -29,10 +29,10 @@ namespace Presentation.Controllers
             return await BasicRequestHandler(Mediator.Send(command));
         }
 
-        [HttpDelete]
-        public async Task<Response<bool>> Delete(DeleteEmpresaCommand command)
+        [HttpDelete("{id}")]
+        public async Task<Response<bool>> Delete(int id)
         {
-            return await BasicRequestHandler(Mediator.Send(command));
+            return await BasicRequestHandler(Mediator.Send(new DeleteEmpresaCommand { Id = id }));
         }
     }
 }

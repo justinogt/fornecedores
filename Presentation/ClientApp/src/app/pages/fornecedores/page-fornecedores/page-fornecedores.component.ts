@@ -9,6 +9,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalNewProviderComponent } from '../modal-new-provider/modal-new-provider.component';
 import { FornecedorListItem } from 'src/app/models/fornecedores.model';
 import { EmpresaSimple } from 'src/app/models/empresas.model';
+import { EmpresasService } from 'src/app/services/empresas.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-page-fornecedores',
@@ -24,9 +26,18 @@ export class PageFornecedoresComponent implements OnInit {
 
   private rawColumns: Column<FornecedorListItem>[] = [];
   private rawProviders: FornecedorListItem[] = [];
+  private swal = Swal.mixin({
+    customClass: {
+      confirmButton: 'ml-5 btn btn-danger',
+      cancelButton: 'btn btn-primary'
+    },
+    buttonsStyling: false,
+    reverseButtons: true
+  });
 
   constructor(
     private fornecedoresService: FornecedoresService,
+    private empresasService: EmpresasService,
     private modalService: NgbModal) { }
 
   async ngOnInit() {
@@ -39,6 +50,10 @@ export class PageFornecedoresComponent implements OnInit {
     ];
     this.columns$ = of<Column<FornecedorListItem>[]>(this.rawColumns);
 
+    const res = await this.empresasService.getAll().toPromise();
+    if (res.status === STATUS.SUCCESS)
+      this.companies = res.data.empresas;
+
     await this.refreshProviders();
     this.rawProviders = this.providers$.value;
   }
@@ -50,6 +65,26 @@ export class PageFornecedoresComponent implements OnInit {
     ref.result
       .then(result => result === 'refresh' && this.refreshProviders())
       .catch(() => {});
+  }
+
+  async deleteProvider(provider: FornecedorListItem) {
+    const response = await this.swal.fire({
+      title: `Deseja deletar o fornecedor ${provider.nome}?`,
+      text: 'Essa ação não pode ser revertida!',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Deletar',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading(),
+      preConfirm: () => this.fornecedoresService.delete(provider.id).toPromise()
+    });
+
+    if (response.value.status === STATUS.SUCCESS) {
+      await Swal.fire('Fornecedor Deletado!', '', 'success');
+      this.refreshProviders();
+    } else
+      await Swal.fire(``, response.value.errors[0].message, 'error');
   }
 
   async filter(filterData: FilterData<FornecedorListItem>) {

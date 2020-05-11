@@ -7,6 +7,7 @@ import { STATUS } from 'src/app/models/response.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalNewCompanyComponent } from '../modal-new-company/modal-new-company.component';
 import { EmpresaSimple } from 'src/app/models/empresas.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-page-empresas',
@@ -20,6 +21,14 @@ export class PageEmpresasComponent implements OnInit {
 
   private rawColumns: Column<EmpresaSimple>[] = [];
   private rawCompanies: EmpresaSimple[] = [];
+  private swal = Swal.mixin({
+    customClass: {
+      confirmButton: 'ml-5 btn btn-danger',
+      cancelButton: 'btn btn-primary'
+    },
+    buttonsStyling: false,
+    reverseButtons: true
+  });
 
   constructor(
     private empresasService: EmpresasService,
@@ -41,6 +50,26 @@ export class PageEmpresasComponent implements OnInit {
     this.modalService.open(ModalNewCompanyComponent, { size: 'lg' }).result
       .then(result => result === 'refresh' && this.refreshCompanies())
       .catch(() => {});
+  }
+
+  async deleteCompany(company: EmpresaSimple) {
+    const response = await this.swal.fire({
+      title: `Deseja deletar a empresa ${company.nomeFantasia}?`,
+      text: 'Essa ação não pode ser revertida!',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Deletar',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading(),
+      preConfirm: () => this.empresasService.delete(company.id).toPromise()
+    });
+
+    if (response.value.status === STATUS.SUCCESS) {
+      await Swal.fire('Empresa Deletada!', '', 'success');
+      this.refreshCompanies();
+    } else
+      await Swal.fire(``, response.value.errors[0].message, 'error');
   }
 
   async filter(filterData: FilterData<EmpresaSimple>) {

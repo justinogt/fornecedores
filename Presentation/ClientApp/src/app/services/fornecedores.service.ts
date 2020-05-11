@@ -38,4 +38,8 @@ export class FornecedoresService {
   save(provider: FornecedorSaveCommand) {
     return this.http.post<Response<number>>(`${environment.ApiURL}/fornecedores`, provider);
   }
+
+  delete(id: number) {
+    return this.http.delete<Response<boolean>>(`${environment.ApiURL}/fornecedores/${id}`);
+  }
 }

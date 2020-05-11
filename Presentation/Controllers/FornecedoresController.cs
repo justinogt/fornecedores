@@ -19,7 +19,7 @@ namespace Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<Response<FornecedorDetailVm>> Get(int id)
         {
-            return await BasicRequestHandler(Mediator.Send(new GetFornecedorDetailQuery() { Id = id }));
+            return await BasicRequestHandler(Mediator.Send(new GetFornecedorDetailQuery { Id = id }));
         }
 
         [HttpPost]
@@ -28,10 +28,10 @@ namespace Presentation.Controllers
             return await BasicRequestHandler(Mediator.Send(command));
         }
 
-        [HttpDelete]
-        public async Task<Response<bool>> Delete(DeleteFornecedorCommand command)
+        [HttpDelete("{id}")]
+        public async Task<Response<bool>> Delete(int id)
         {
-            return await BasicRequestHandler(Mediator.Send(command));
+            return await BasicRequestHandler(Mediator.Send(new DeleteFornecedorCommand { Id = id }));
         }
     }
 }

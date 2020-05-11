@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, AbstractControl, FormArray } from '@angular/forms';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
 import { cpfValidator, cnpjValidator, isCpf, dateValidator } from 'src/app/utils';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
@@ -13,10 +13,10 @@ const companyPrProviderShouldBeAdult = (companies: EmpresaSimple[]): ValidatorFn
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control.parent) return null;
 
+    const empresaId = Number(control.parent.get('empresaId').value);
     const company = companies.find(item => item.id === empresaId);
     if (!company) return null;
 
-    const empresaId = Number(control.parent.get('empresaId').value);
     const birthday = parse(control.value, 'dd/MM/yyyy', new Date());
 
     if (company.uf === 'PR' && differenceInYears(new Date(), birthday) < 18)
@@ -51,14 +51,16 @@ export class ModalNewProviderComponent implements OnInit, OnDestroy {
   get cpfCnpj() { return this.providerForm.get('cpfCnpj'); }
   get rg() { return this.providerForm.get('rg'); }
   get dataNascimento() { return this.providerForm.get('dataNascimento'); }
+  get telefones() { return this.providerForm.get('telefones') as FormArray; }
 
   ngOnInit() {
     this.providerForm = new FormGroup({
-      empresaId: new FormControl(this.companies.length > 0 ? this.companies[0].id : 0, Validators.required),
+      empresaId: new FormControl(this.companies.length > 0 ? this.companies[0].id : null, Validators.required),
       nome: new FormControl('', Validators.required),
       cpfCnpj: new FormControl('', [cpfValidator, cnpjValidator(14)]),
       rg: new FormControl('', Validators.required),
-      dataNascimento: new FormControl('', [dateValidator, companyPrProviderShouldBeAdult(this.companies)])
+      dataNascimento: new FormControl('', [dateValidator, companyPrProviderShouldBeAdult(this.companies)]),
+      telefones: new FormArray([new FormControl()])
     });
 
     this.subs.push(
@@ -92,9 +94,21 @@ export class ModalNewProviderComponent implements OnInit, OnDestroy {
 
   save() {
     this.isSaving = true;
+
+    const value = this.providerForm.value;
+    // Ignore empty telefones
+    value.telefones = value.telefones.filter(item => item);
+
     this.fornecedoresService.save(this.providerForm.value).subscribe(() => {
       this.isSaving = false;
       this.activeModal.close('refresh');
     });
+  }
+
+  addTelefone() {
+    this.telefones.push(new FormControl());
+  }
+  removeTelefone(i: number) {
+    this.telefones.removeAt(i);
   }
 }

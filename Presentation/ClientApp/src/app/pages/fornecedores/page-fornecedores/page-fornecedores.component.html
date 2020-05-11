@@ -5,6 +5,7 @@
   </ng-template>
 
   <ng-template #contentTemplate>
-    <app-table [columns$]="columns$" [data$]="providers$" (filter)="filter($event)"></app-table>
+    <app-table [columns$]="columns$" [data$]="providers$"
+      (filter)="filter($event)" (delete)="deleteProvider($event)"></app-table>
   </ng-template>
 </app-page-card>

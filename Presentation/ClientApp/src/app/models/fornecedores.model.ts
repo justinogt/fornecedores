@@ -6,6 +6,7 @@ export interface FornecedorSaveCommand {
   rg: string;
   dataNascimento: Date;
   empresaId: number;
+  telefones: string[];
 }
 
 export interface FornecedorSimple {

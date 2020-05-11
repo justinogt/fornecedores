@@ -99,10 +99,14 @@ body {
 /*
   * Validation
   */
-form input.ng-dirty.ng-invalid {
+form input.ng-dirty.ng-invalid,
+form .custom-select.ng-dirty.ng-invalid,
+form .custom-select.ng-pristine.ng-invalid {
   border-color: #dc3545;
 }
-form input.ng-dirty.ng-valid {
+form input.ng-dirty.ng-valid,
+form .custom-select.ng-dirty.ng-valid,
+form .custom-select.ng-pristine.ng-valid {
   border-color: #28a745;
 }
 

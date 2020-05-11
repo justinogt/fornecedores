@@ -19,4 +19,8 @@ export class EmpresasService {
   save(company: EmpresaSaveCommand) {
     return this.http.post<Response<number>>(`${environment.ApiURL}/empresas`, company);
   }
+
+  delete(id: number) {
+    return this.http.delete<Response<boolean>>(`${environment.ApiURL}/empresas/${id}`);
+  }
 }

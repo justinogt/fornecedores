@@ -40,7 +40,10 @@ export function filterTable<T>(filter: FilterData<T>, rawColumns: Column<T>[], r
 export class TableComponent<T = any> {
   @Input() columns$: Observable<Column<T>[]>;
   @Input() data$: Observable<T[]>;
+
   @Output() filter = new EventEmitter<FilterData<T>>();
+  @Output() delete = new EventEmitter<T>();
+  @Output() edit = new EventEmitter<T>();
 
   filterData = { };
 

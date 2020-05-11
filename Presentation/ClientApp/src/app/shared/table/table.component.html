@@ -20,10 +20,14 @@
       <td *ngFor="let col of columns$ | async" [innerHTML]="formatField(col, row, index)"></td>
       <td>
         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-light"><i class="fas fa-pen"></i></button>
-          <button type="button" class="btn btn-light text-danger"><i class="fas fa-trash"></i></button>
+          <!-- <button type="button" class="btn btn-light" (click)="edit.emit(row)"><i class="fas fa-pen"></i></button> -->
+          <button type="button" class="btn btn-light text-danger" (click)="delete.emit(row)"><i class="fas fa-trash"></i></button>
         </div>
       </td>
+    </tr>
+
+    <tr *ngIf="!data$ || (data$ | async).length == 0">
+      <td attr.colspan="{{(columns$ | async).length + 1}}" class="text-center">Não há registros</td>
     </tr>
   </tbody>
 </table>

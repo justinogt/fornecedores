@@ -46,7 +46,7 @@
     </div>
     <fieldset *ngIf="isPessoaFisica()">
       <div class="form-row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-6">
           <label for="nomeFantasia">RG</label>
           <input formControlName="rg"
             type="text" class="form-control" id="rg" placeholder="RG">
@@ -57,9 +57,8 @@
             </span>
           </ng-container>
         </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-12">
+
+        <div class="form-group col-md-6">
           <label for="dataNascimento">Data de Nascimento</label>
           <input formControlName="dataNascimento" mask="00/00/0000" [dropSpecialCharacters]="false"
             type="text" class="form-control" id="dataNascimento" placeholder="00/00/0000">
@@ -75,6 +74,19 @@
         </div>
       </div>
     </fieldset>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="nomeFantasia">Telefones</label>
+        <div formArrayName="telefones">
+          <div *ngFor="let telefone of telefones.controls; let index = index; let last = last" class="d-flex mb-2">
+            <input [formControlName]="index" mask="(00) 0*-0000" class="form-control" type="text" placeholder="(00) 0000-0000">
+            <button *ngIf="index > 0" class="btn btn-danger ml-4" (click)="removeTelefone(index)">-</button>
+            <button *ngIf="last" class="btn btn-primary ml-2" (click)="addTelefone()">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
 </div>
 <div class="modal-footer">
